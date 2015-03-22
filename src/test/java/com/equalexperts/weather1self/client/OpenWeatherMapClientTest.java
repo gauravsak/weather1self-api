@@ -1,6 +1,6 @@
 package com.equalexperts.weather1self.client;
 
-import com.equalexperts.weather1self.client.response.owm.WeatherDatum;
+import com.equalexperts.weather1self.client.response.TemperatureDatum;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -14,8 +14,8 @@ public class OpenWeatherMapClientTest {
     public void getsWeatherData() throws Exception {
         DateTime today = new DateTime();
         DateTime yesterday = today.minusDays(1);
-        List<WeatherDatum> weatherData = OpenWeatherMapClient.getWeatherData("Pune", "IN", yesterday, today, "hour");
-        for (WeatherDatum weatherDatum : weatherData) {
+        List<TemperatureDatum> weatherData = OpenWeatherMapClient.getWeatherData("Pune", "IN", yesterday, today, "hour");
+        for (TemperatureDatum weatherDatum : weatherData) {
             assertNotNull(weatherDatum.getTemperature());
             assertNotNull(weatherDatum.getISOTimestamp());
         }

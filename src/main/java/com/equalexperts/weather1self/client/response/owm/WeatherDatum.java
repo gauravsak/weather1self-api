@@ -1,5 +1,6 @@
 package com.equalexperts.weather1self.client.response.owm;
 
+import com.equalexperts.weather1self.client.response.TemperatureDatum;
 import com.equalexperts.weather1self.model.lib1self.Event;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 import static com.equalexperts.weather1self.model.lib1self.WeatherEventAttributes.*;
 
-public class WeatherDatum {
+public class WeatherDatum implements TemperatureDatum {
 
     private BigDecimal temperature;
     private DateTime instant;
@@ -25,10 +26,12 @@ public class WeatherDatum {
         this.instant = instant;
     }
 
+    @Override
     public BigDecimal getTemperature() {
         return temperature;
     }
 
+    @Override
     public String getISOTimestamp() {
         return ISO_FORMAT.print(instant);
     }
@@ -41,6 +44,7 @@ public class WeatherDatum {
         return new WeatherDatum(temperature, instant);
     }
 
+    @Override
     public Event to1SelfEvent() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(PROPERTY, getTemperature());

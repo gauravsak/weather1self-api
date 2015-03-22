@@ -1,6 +1,6 @@
 package com.equalexperts.weather1self.client;
 
-import com.equalexperts.weather1self.client.response.owm.WeatherDatum;
+import com.equalexperts.weather1self.client.response.TemperatureDatum;
 import com.equalexperts.weather1self.client.response.owm.WeatherResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -25,7 +25,7 @@ public class OpenWeatherMapClient {
     private static final String API_BASE_URL = "api.openweathermap.org/data/2.5";
     private static final String API_KEY = "a19d564d7f6db6df2c4d18a3c218131d";
 
-    public static List<WeatherDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant, String frequency)
+    public static List<TemperatureDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant, String frequency)
             throws URISyntaxException, IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         URI weatherHistoryURI = new URIBuilder()
@@ -49,7 +49,7 @@ public class OpenWeatherMapClient {
                 EntityUtils.consume(responseEntity);
             }
         }
-        return weatherResponse != null ? weatherResponse.getWeatherData() : Collections.<WeatherDatum>emptyList();
+        return weatherResponse != null ? weatherResponse.getWeatherData() : Collections.<TemperatureDatum>emptyList();
     }
 
     private static String getCityAndCountryParam(String city, String country) {

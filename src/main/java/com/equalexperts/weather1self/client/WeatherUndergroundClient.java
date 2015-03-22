@@ -1,5 +1,6 @@
 package com.equalexperts.weather1self.client;
 
+import com.equalexperts.weather1self.client.response.TemperatureDatum;
 import com.equalexperts.weather1self.client.response.wu.WeatherDatum;
 import com.equalexperts.weather1self.client.response.wu.WeatherResponse;
 import org.apache.http.HttpEntity;
@@ -27,11 +28,11 @@ public class WeatherUndergroundClient {
     private static final String API_KEY = "d9be903ff6644e14";
     private static final String API_BASE_URL = "api.wunderground.com/api/" + API_KEY;
 
-    public static List<WeatherDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant)
+    public static List<TemperatureDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant)
             throws URISyntaxException, IOException {
         DateTime currentInstant = fromInstant;
         DateTimeFormatter yyyyMMddFormat = DateTimeFormat.forPattern("yyyyMMdd");
-        List<WeatherDatum> weatherDataForAllDays = new ArrayList<>();
+        List<TemperatureDatum> weatherDataForAllDays = new ArrayList<>();
         while (currentInstant.isBefore(toInstant)) {
             String dateParam = yyyyMMddFormat.print(currentInstant);
             List<WeatherDatum> weatherData = weatherFor(dateParam, city, country);

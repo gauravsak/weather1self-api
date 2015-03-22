@@ -82,4 +82,13 @@ public class Lib1SelfClient {
         return eventsJsonSB.toString();
     }
 
+    public static String getEventsChartURI(Stream stream, String objectTags, String actionTags, String aggregation, String property) throws URISyntaxException {
+        return new URIBuilder()
+                .setScheme("http")
+                .setHost(Lib1SelfClient.API_BASE_URL)
+                .setPath("/streams/" + stream.getId() + "/events/" + objectTags + "/" + actionTags + "/" + aggregation
+                        + "(" + property + ")/" + "daily/barchart")
+                .addParameter("readToken", stream.getReadToken())
+                .build().toString();
+    }
 }
