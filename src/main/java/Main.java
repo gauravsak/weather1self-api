@@ -4,8 +4,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -115,15 +113,15 @@ public class Main extends HttpServlet {
 
     public static void main(String[] args) throws Exception {
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.setContextPath("/");
+//        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        context.setContextPath("/");
+//        context.addServlet(new ServletHolder(new Main()), "/*");
 
         HandlerCollection handlers = new HandlerCollection();
         handlers.addHandler(new PostHandler());
-        handlers.addHandler(context);
+//        handlers.addHandler(context);
         handlers.addHandler(new DefaultHandler());
         server.setHandler(handlers);
-        context.addServlet(new ServletHolder(new Main()), "/*");
         server.start();
         server.join();
     }
