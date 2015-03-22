@@ -1,4 +1,4 @@
-package com.equalexperts.weather1self.client.response;
+package com.equalexperts.weather1self.client.response.wu;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +19,8 @@ public class WeatherResponse {
     }
 
     public static WeatherResponse fromJSON(JSONObject weatherResponseJson) {
-        JSONArray weatherDataJSON = weatherResponseJson.getJSONArray("list");
+        JSONObject weatherHistoryJSON = weatherResponseJson.getJSONObject("history");
+        JSONArray weatherDataJSON = weatherHistoryJSON.getJSONArray("observations");
         List<WeatherDatum> weatherData = new ArrayList<>();
         for (int i = 0; i < weatherDataJSON.length(); i ++) {
             WeatherDatum weatherDatum = WeatherDatum.fromJSON(weatherDataJSON.getJSONObject(i));

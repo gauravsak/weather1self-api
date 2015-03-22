@@ -1,4 +1,4 @@
-package com.equalexperts.weather1self.client.response;
+package com.equalexperts.weather1self.client.response.owm;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;

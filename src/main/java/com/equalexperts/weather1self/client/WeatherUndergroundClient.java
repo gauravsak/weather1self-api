@@ -1,7 +1,7 @@
 package com.equalexperts.weather1self.client;
 
-import com.equalexperts.weather1self.client.response.owm.WeatherDatum;
-import com.equalexperts.weather1self.client.response.owm.WeatherResponse;
+import com.equalexperts.weather1self.client.response.wu.WeatherDatum;
+import com.equalexperts.weather1self.client.response.wu.WeatherResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -11,34 +11,45 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
-public class OpenWeatherMapClient {
+public class WeatherUndergroundClient {
 
-    private static final String API_BASE_URL = "api.openweathermap.org/data/2.5";
-    private static final String API_KEY = "a19d564d7f6db6df2c4d18a3c218131d";
+    private static final String API_KEY = "d9be903ff6644e14";
+    private static final String API_BASE_URL = "api.wunderground.com/api/" + API_KEY;
 
-    public static List<WeatherDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant, String frequency)
+    public static List<WeatherDatum> getWeatherData(String city, String country, DateTime fromInstant, DateTime toInstant)
+            throws URISyntaxException, IOException {
+        DateTime currentInstant = fromInstant;
+        DateTimeFormatter yyyyMMddFormat = DateTimeFormat.forPattern("yyyyMMdd");
+        List<WeatherDatum> weatherDataForAllDays = new ArrayList<>();
+        while (currentInstant.isBefore(toInstant)) {
+            String dateParam = yyyyMMddFormat.print(currentInstant);
+            List<WeatherDatum> weatherData = weatherFor(dateParam, city, country);
+            weatherDataForAllDays.addAll(weatherData);
+            currentInstant = currentInstant.plusDays(1);
+        }
+        return weatherDataForAllDays;
+    }
+
+    private static List<WeatherDatum> weatherFor(String yyyyMMdd, String city, String country)
             throws URISyntaxException, IOException {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         URI weatherHistoryURI = new URIBuilder()
                 .setScheme("http")
                 .setHost(API_BASE_URL)
-                .setPath("/history/city")
-                .addParameter("q", getCityAndCountryParam(city, country))
-                .addParameter("start", getEpoch(fromInstant).toString())
-                .addParameter("end", getEpoch(toInstant).toString())
-                .addParameter("type", frequency)
+                .setPath("/history_" + yyyyMMdd + "/q/" + country + "/" + city + ".json")
                 .build();
         HttpGet weatherDataGET = new HttpGet(weatherHistoryURI);
-        weatherDataGET.setHeader("x-api-key", API_KEY);
         System.out.println(weatherDataGET.getURI());
         WeatherResponse weatherResponse = null;
         try (CloseableHttpResponse response = httpClient.execute(weatherDataGET)) {
@@ -50,13 +61,5 @@ public class OpenWeatherMapClient {
             }
         }
         return weatherResponse != null ? weatherResponse.getWeatherData() : Collections.<WeatherDatum>emptyList();
-    }
-
-    private static String getCityAndCountryParam(String city, String country) {
-        return city + ", " + country.toLowerCase(Locale.ENGLISH);
-    }
-
-    private static Long getEpoch(DateTime instant) {
-        return instant.getMillis() / 1000;
     }
 }
