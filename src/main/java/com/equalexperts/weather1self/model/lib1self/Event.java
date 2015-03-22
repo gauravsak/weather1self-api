@@ -32,16 +32,32 @@ public class Event {
         this.dateTime = dateTime;
     }
 
+    public List<String> getObjectTags() {
+        return objectTags;
+    }
+
+    public List<String> getActionTags() {
+        return actionTags;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
     public static JSONObject toJSON(Event event) {
         JSONObject eventJSON = new JSONObject();
-        eventJSON.put("objectTags", event.objectTags);
-        eventJSON.put("actionTags", event.actionTags);
+        eventJSON.put("objectTags", event.getObjectTags());
+        eventJSON.put("actionTags", event.getActionTags());
         JSONObject propertiesJSON = new JSONObject();
-        for (Map.Entry<String, Object> property : event.properties.entrySet()) {
+        for (Map.Entry<String, Object> property : event.getProperties().entrySet()) {
             propertiesJSON.put(property.getKey(), property.getValue());
         }
         eventJSON.put("properties", propertiesJSON);
-        eventJSON.put("dateTime", event.dateTime);
+        eventJSON.put("dateTime", event.getDateTime());
         return eventJSON;
     }
 }
