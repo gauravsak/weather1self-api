@@ -1,3 +1,5 @@
+import com.equalexperts.weather1self.model.lib1self.Stream;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -27,6 +30,11 @@ public class Main extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String requestBody = getBody(req);
+        ObjectMapper mapper = new ObjectMapper();
+        Stream stream = mapper.readValue(requestBody, Stream.class);
+
+        PrintWriter out = resp.getWriter();
+        out.print("success : " + stream);
     }
 
     private static String getBody(HttpServletRequest request) throws IOException {
@@ -106,6 +114,7 @@ public class Main extends HttpServlet {
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        context.setAllowNullPathInfo(true);
         server.setHandler(context);
         context.addServlet(new ServletHolder(new Main()), "/*");
         server.start();
