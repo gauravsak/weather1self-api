@@ -1,5 +1,7 @@
 package com.equalexperts.weather1self.model.lib1self;
 
+import org.json.JSONObject;
+
 public class Stream {
 
     private String streamId;
@@ -27,5 +29,10 @@ public class Stream {
     @Override
     public String toString() {
         return "[" + streamId + ", " + readToken + ", " + writeToken + "]";
+    }
+
+    public static Stream fromJSON(JSONObject streamJSON) {
+        return new Stream(streamJSON.getString("streamId"), streamJSON.getString("readToken"),
+                streamJSON.getString("writeToken"));
     }
 }
