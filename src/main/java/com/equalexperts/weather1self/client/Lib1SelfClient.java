@@ -13,12 +13,14 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.jetty.http.HttpHeaders;
 import org.eclipse.jetty.http.HttpStatus;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 public class Lib1SelfClient {
@@ -64,6 +66,8 @@ public class Lib1SelfClient {
         String eventsJSONString = getEventsJSONString(events);
         eventsBatchPOST.setEntity(new StringEntity(eventsJSONString, Charset.forName("UTF-8")));
         System.out.println(eventsBatchPOST.getURI());
+        System.out.println(Arrays.toString(eventsBatchPOST.getAllHeaders()));
+        System.out.println(EntityUtils.toString(eventsBatchPOST.getEntity()));
         try (CloseableHttpResponse response = httpClient.execute(eventsBatchPOST)) {
             if (response.getStatusLine().getStatusCode() == HttpStatus.OK_200) {
                 HttpEntity responseEntity = response.getEntity();
@@ -74,12 +78,11 @@ public class Lib1SelfClient {
     }
 
     private static String getEventsJSONString(List<Event> events) {
-        StringBuilder eventsJsonSB = new StringBuilder("[");
+        JSONArray eventsArray = new JSONArray();
         for(Event event : events) {
-            eventsJsonSB.append(Event.toJSON(event).toString());
+            eventsArray.put(Event.toJSON(event));
         }
-        eventsJsonSB.append("]");
-        return eventsJsonSB.toString();
+        return eventsArray.toString();
     }
 
     public static String getEventsChartURI(Stream stream, String objectTags, String actionTags, String aggregation, String property) throws URISyntaxException {

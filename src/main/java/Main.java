@@ -42,10 +42,9 @@ public class Main extends HttpServlet {
 
         DateTime now = DateTime.now();
         DateTime sevenDaysBefore = now.minusDays(7);
-        Stream stream;
-        List<TemperatureDatum> temperatureData;
         try {
-            stream = Lib1SelfClient.createStream();
+            Stream stream = Lib1SelfClient.createStream();
+            List<TemperatureDatum> temperatureData;
             switch (weatherSource) {
                 case OWM:
                     temperatureData = OpenWeatherMapClient.getWeatherData(city, country,

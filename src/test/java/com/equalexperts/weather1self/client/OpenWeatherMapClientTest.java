@@ -7,17 +7,20 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class OpenWeatherMapClientTest {
 
     @Test
     public void getsWeatherData() throws Exception {
         DateTime today = new DateTime();
-        DateTime yesterday = today.minusDays(1);
-        List<TemperatureDatum> weatherData = OpenWeatherMapClient.getWeatherData("Pune", "IN", yesterday, today, "hour");
+        DateTime threeDaysBefore = today.minusDays(3);
+        List<TemperatureDatum> weatherData = OpenWeatherMapClient.getWeatherData("Pune", "IN", threeDaysBefore, today, "hour");
+        assertTrue(!weatherData.isEmpty());
         for (TemperatureDatum weatherDatum : weatherData) {
             assertNotNull(weatherDatum.getTemperature());
             assertNotNull(weatherDatum.getISOTimestamp());
+            System.out.println("[ " + weatherDatum.getTemperature() + ", " + weatherDatum.getTemperature() + "]");
         }
     }
 
