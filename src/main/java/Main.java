@@ -1,6 +1,8 @@
 import com.equalexperts.weather1self.model.lib1self.Stream;
+import com.equalexperts.weather1self.server.PostHandler;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -114,8 +116,11 @@ public class Main extends HttpServlet {
         Server server = new Server(Integer.valueOf(System.getenv("PORT")));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
-        context.setAllowNullPathInfo(true);
-        server.setHandler(context);
+
+        HandlerCollection handlers = new HandlerCollection();
+        handlers.addHandler(context);
+        handlers.addHandler(new PostHandler());
+        server.setHandler(handlers);
         context.addServlet(new ServletHolder(new Main()), "/*");
         server.start();
         server.join();

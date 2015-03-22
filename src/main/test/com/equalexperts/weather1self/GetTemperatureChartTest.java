@@ -21,7 +21,7 @@ public class GetTemperatureChartTest {
     public void getsTemperatureChart() throws IOException {
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost("http://weather1self-api.heroku.com");
+        HttpPost httpPost = new HttpPost("http://weather1self-api.heroku.com/");
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("streamId", "some stream ID"));
         nameValuePairs.add(new BasicNameValuePair("readToken", "some read token"));
