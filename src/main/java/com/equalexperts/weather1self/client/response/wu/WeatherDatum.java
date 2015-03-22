@@ -1,8 +1,13 @@
 package com.equalexperts.weather1self.client.response.wu;
 
+import com.equalexperts.weather1self.model.lib1self.Event;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.equalexperts.weather1self.model.lib1self.WeatherEventAttributes.*;
 
 public class WeatherDatum {
 
@@ -32,5 +37,11 @@ public class WeatherDatum {
         String hour = dateJson.getString("hour");
         String minute = dateJson.getString("min");
         return new WeatherDatum(temperature, new DateTime(year, month, dayOfMonth, hour, minute));
+    }
+
+    public Event to1SelfEvent() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(PROPERTY, getTemperature());
+        return new Event(OBJECT_TAGS, ACTION_TAGS, properties, getISOTimestamp());
     }
 }

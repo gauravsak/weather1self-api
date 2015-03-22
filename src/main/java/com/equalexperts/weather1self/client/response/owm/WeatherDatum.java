@@ -1,11 +1,16 @@
 package com.equalexperts.weather1self.client.response.owm;
 
+import com.equalexperts.weather1self.model.lib1self.Event;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.equalexperts.weather1self.model.lib1self.WeatherEventAttributes.*;
 
 public class WeatherDatum {
 
@@ -34,5 +39,11 @@ public class WeatherDatum {
         BigDecimal temperature = temperatureInKelvin.subtract(ONE_DEGREE_KELVIN).setScale(2, BigDecimal.ROUND_HALF_UP);
         DateTime instant = new DateTime(weatherDatumJSON.getLong("dt") * 1000);
         return new WeatherDatum(temperature, instant);
+    }
+
+    public Event to1SelfEvent() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(PROPERTY, getTemperature());
+        return new Event(OBJECT_TAGS, ACTION_TAGS, properties, getISOTimestamp());
     }
 }

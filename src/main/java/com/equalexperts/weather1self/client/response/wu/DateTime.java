@@ -1,22 +1,21 @@
 package com.equalexperts.weather1self.client.response.wu;
 
 public class DateTime {
-    private String year;
-    private String month;
-    private String dayOfMonth;
-    private String hour;
-    private String minute;
+    private String yyyy;
+    private String MM;
+    private String dd;
+    private String HH;
+    private String mm;
 
-    public DateTime(String year, String month, String dayOfMonth, String hour, String minute) {
-        this.year = year;
-        this.month = month;
-        this.dayOfMonth = dayOfMonth;
-        this.hour = hour;
-        this.minute = minute;
+    public DateTime(String yyyy, String MM, String dd, String HH, String mm) {
+        this.yyyy = yyyy;
+        this.MM = MM;
+        this.dd = dd;
+        this.HH = HH;
+        this.mm = mm;
     }
 
     public String toISOString() {
-        return year + "-" + month + "-"
-                + dayOfMonth + "T" + hour + ":" + minute + ":00.000Z";    // “2014-11-11T22:30:00.000Z”
+        return yyyy + "-" + MM + "-" + dd + "T" + HH + ":" + mm + ":00.000Z";    // “2014-11-11T22:30:00.000Z”
     }
 }

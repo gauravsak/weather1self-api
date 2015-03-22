@@ -32,7 +32,7 @@ public class Stream {
     }
 
     public static Stream fromJSON(JSONObject streamJSON) {
-        return new Stream(streamJSON.getString("streamId"), streamJSON.getString("readToken"),
+        return new Stream(streamJSON.getString("streamid"), streamJSON.getString("readToken"),
                 streamJSON.getString("writeToken"));
     }
 
