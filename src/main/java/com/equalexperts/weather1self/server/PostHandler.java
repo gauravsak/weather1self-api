@@ -23,7 +23,8 @@ public class PostHandler extends ContextHandler {
     @Override
     public void doHandle(String target, Request baseRequest, HttpServletRequest request,
                          HttpServletResponse response) throws IOException, ServletException {
-        System.out.println("Inside post handler : " + request.getMethod());
+        System.out.println("Inside POST handler");
+        System.out.println("Weather Source : " + request.getHeader("x-weather-source"));
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);
 

@@ -25,6 +25,7 @@ public class GetTemperatureChartTest {
         streamJSON.put("readToken", "some readToken");
         streamJSON.put("writeToken", "some writeToken");
         httpPost.setEntity(new StringEntity(streamJSON.toString()));
+        httpPost.addHeader("x-weather-source", "wunderground.com");
         CloseableHttpResponse response = httpClient.execute(httpPost);
 
         try {
