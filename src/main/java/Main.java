@@ -30,7 +30,8 @@ public class Main extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-//            showHome(req, resp);
+        if(req.getQueryString() == null)
+            showHome(req, resp);
 
         Map<String, String> queryParams = getQueryParams(req.getQueryString());
         String city = queryParams.get("city");
