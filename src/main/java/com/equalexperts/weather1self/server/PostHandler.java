@@ -1,17 +1,14 @@
 package com.equalexperts.weather1self.server;
 
-import com.equalexperts.weather1self.model.lib1self.Stream;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.ContextHandler;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class PostHandler extends ContextHandler {
 
@@ -27,14 +24,6 @@ public class PostHandler extends ContextHandler {
         System.out.println("Weather Source : " + request.getHeader("x-weather-source"));
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);
-
-        String requestBody = getBody(request);
-        System.out.println("Request body : " + requestBody);
-        JSONObject streamJson = new JSONObject(requestBody);
-        Stream stream = Stream.fromJSON(streamJson);
-
-        PrintWriter out = response.getWriter();
-        out.print("success : " + stream);
     }
 
     private static String getBody(HttpServletRequest request) throws IOException {

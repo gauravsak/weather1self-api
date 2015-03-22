@@ -1,3 +1,6 @@
+import com.equalexperts.weather1self.client.Lib1SelfClient;
+import com.equalexperts.weather1self.model.lib1self.Stream;
+import com.equalexperts.weather1self.model.lib1self.WeatherSource;
 import com.equalexperts.weather1self.server.PostHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
@@ -9,20 +12,57 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        if (req.getRequestURI().endsWith("/db")) {
-            showDatabase(req, resp);
-        } else {
-            showHome(req, resp);
+//        if (req.getRequestURI().endsWith("/db")) {
+//            showDatabase(req, resp);
+//        } else {
+//            showHome(req, resp);
+//        }
+
+        Map<String, String> queryParams = getQueryParams(req.getQueryString());
+        String city = queryParams.get("city");
+        String country = queryParams.get("country");
+        WeatherSource weatherSource = determineWeatherSource(req.getHeader("x-weather-source"));
+
+        Stream stream = null;
+        try {
+            stream = Lib1SelfClient.createStream();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
+
+        PrintWriter out = resp.getWriter();
+        out.print("success : " + stream);
+    }
+
+    private static WeatherSource determineWeatherSource(String weatherSourceWebsite) {
+        for(WeatherSource weatherSource : WeatherSource.values()) {
+            if(weatherSource.getWeatherSourceWebsite().equals(weatherSourceWebsite)) {
+                return weatherSource;
+            }
+        }
+        return WeatherSource.WU;
+    }
+
+    private static Map<String, String> getQueryParams(String queryString) {
+        String[] queryParamNameValuePairs = queryString.split("&");
+        Map<String, String> queryParams = new HashMap<>();
+        for (String queryParamNameValuePair : queryParamNameValuePairs) {
+            String[] queryParamNameValue = queryParamNameValuePair.split("=");
+            queryParams.put(queryParamNameValue[0], queryParamNameValue[1]);
+        }
+        return queryParams;
     }
 
     private void showHome(HttpServletRequest req, HttpServletResponse resp)
