@@ -35,4 +35,12 @@ public class Stream {
         return new Stream(streamJSON.getString("streamId"), streamJSON.getString("readToken"),
                 streamJSON.getString("writeToken"));
     }
+
+    public static JSONObject toJSON(Stream stream) {
+        JSONObject streamJSON = new JSONObject();
+        streamJSON.put("streamId", stream.getId());
+        streamJSON.put("readToken", stream.getReadToken());
+        streamJSON.put("writeToken", stream.getWriteToken());
+        return streamJSON;
+    }
 }
