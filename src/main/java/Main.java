@@ -59,7 +59,7 @@ public class Main extends HttpServlet {
             List<Event> events = convertTo1SelfEvents(temperatureData);
             Lib1SelfClient.sendEventsBatch(events, stream);
             PrintWriter out = resp.getWriter();
-            out.print("{chartUri:" + Lib1SelfClient.getEventsChartURI(stream, getCommaSeparatedListString(OBJECT_TAGS), getCommaSeparatedListString(ACTION_TAGS), "mean", PROPERTY) + "}");
+            out.print("{\"chartUri\":\"" + Lib1SelfClient.getEventsChartURI(stream, getCommaSeparatedListString(OBJECT_TAGS), getCommaSeparatedListString(ACTION_TAGS), "mean", PROPERTY) + "\"}");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
