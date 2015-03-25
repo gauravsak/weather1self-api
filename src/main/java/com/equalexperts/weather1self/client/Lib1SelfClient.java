@@ -6,7 +6,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -61,7 +60,7 @@ public class Lib1SelfClient {
                 .build();
         HttpPost eventsBatchPOST = new HttpPost(eventsBatchURI);
         eventsBatchPOST.addHeader(HttpHeaders.AUTHORIZATION, stream.getWriteToken());
-        eventsBatchPOST.addHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+        eventsBatchPOST.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
         String eventsJSONString = getEventsJSONString(events);
         eventsBatchPOST.setEntity(new StringEntity(eventsJSONString, Charset.forName("UTF-8")));
