@@ -73,6 +73,11 @@ public class Lib1SelfClient {
                 HttpEntity responseEntity = response.getEntity();
                 System.out.println(EntityUtils.toString(responseEntity));
                 EntityUtils.consume(responseEntity);
+            } else {
+                System.out.println(response.getStatusLine());
+                HttpEntity responseEntity = response.getEntity();
+                System.out.println(EntityUtils.toString(responseEntity));
+                EntityUtils.consume(responseEntity);
             }
         }
     }
